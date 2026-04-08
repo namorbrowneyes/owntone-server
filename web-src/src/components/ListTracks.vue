@@ -1,16 +1,24 @@
 <template>
-  <list-item
-    v-for="item in items"
-    :key="item.itemId"
-    :icon="icon"
-    :is-item="item.isItem"
-    :is-read="isRead(item.item)"
-    :index="item.index"
-    :lines="[item.item.title, item.item.artist, item.item.album]"
-    :progress="progress(item.item)"
-    @open="open(item.item)"
-    @open-details="openDetails(item.item)"
-  />
+  <recycle-scroller
+    v-if="itemList.length > 0"
+    v-slot="{ item }"
+    class="scroller"
+    :buffer="500"
+    :item-size="64"
+    :items="itemList"
+    key-field="itemId"
+  >
+    <list-item
+      :icon="icon"
+      :is-item="item.isItem"
+      :is-read="isRead(item.item)"
+      :index="item.index"
+      :lines="[item.item.title, item.item.artist, item.item.album]"
+      :progress="progress(item.item)"
+      @open="open(item.item)"
+      @open-details="openDetails(item.item)"
+    />
+  </recycle-scroller>
   <modal-dialog-track
     :item="selectedItem"
     :show="showDetailsModal"
@@ -22,11 +30,12 @@
 <script>
 import ListItem from '@/components/ListItem.vue'
 import ModalDialogTrack from '@/components/ModalDialogTrack.vue'
+import { RecycleScroller } from 'vue-virtual-scroller'
 import queue from '@/api/queue'
 
 export default {
   name: 'ListTracks',
-  components: { ListItem, ModalDialogTrack },
+  components: { ListItem, ModalDialogTrack, RecycleScroller },
   props: {
     expression: { default: '', type: String },
     icon: { default: null, type: String },
@@ -38,6 +47,14 @@ export default {
   emits: ['play-count-changed'],
   data() {
     return { selectedItem: {}, showDetailsModal: false }
+  },
+  computed: {
+    itemList() {
+      if (!this.items) {
+        return []
+      }
+      return [...this.items]
+    }
   },
   methods: {
     isRead(item) {
@@ -69,3 +86,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.scroller {
+  height: calc(100vh - 7rem);
+}
+</style>

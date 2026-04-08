@@ -128,7 +128,7 @@ export default {
             const timeoutId = setTimeout(() => {
               handler.call(this)
               this.scheduledHandlers.delete(handler)
-            }, 50)
+            }, 0)
             this.scheduledHandlers.set(handler, timeoutId)
           }
         })

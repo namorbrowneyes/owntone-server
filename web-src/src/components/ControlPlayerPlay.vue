@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import player from '@/api/player'
 import { usePlayerStore } from '@/stores/player'
 import { useQueueStore } from '@/stores/queue'
 
@@ -32,15 +31,13 @@ export default {
   },
   methods: {
     toggle() {
-      if (this.playerStore.isPlaying && this.queueStore.isPauseAllowed) {
-        player.pause()
-      } else if (
+      if (
         this.playerStore.isPlaying &&
         !this.queueStore.isPauseAllowed
       ) {
-        player.stop()
+        this.playerStore.stopPlayback()
       } else {
-        player.play()
+        this.playerStore.playPause()
       }
     }
   }

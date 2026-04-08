@@ -9,13 +9,16 @@
 </template>
 
 <script>
-import player from '@/api/player'
+import { usePlayerStore } from '@/stores/player'
 import { useQueueStore } from '@/stores/queue'
 
 export default {
   name: 'ControlPlayerPrevious',
   setup() {
-    return { queueStore: useQueueStore() }
+    return {
+      playerStore: usePlayerStore(),
+      queueStore: useQueueStore()
+    }
   },
   computed: {
     disabled() {
@@ -24,7 +27,7 @@ export default {
   },
   methods: {
     previous() {
-      player.previous()
+      this.playerStore.skipPrevious()
     }
   }
 }

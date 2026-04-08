@@ -87,7 +87,6 @@ import ControlPlayerPrevious from '@/components/ControlPlayerPrevious.vue'
 import ControlPlayerRepeat from '@/components/ControlPlayerRepeat.vue'
 import ControlPlayerShuffle from '@/components/ControlPlayerShuffle.vue'
 import ControlStreamVolume from '@/components/ControlStreamVolume.vue'
-import player from '@/api/player'
 import { useOutputsStore } from '@/stores/outputs'
 import { usePlayerStore } from '@/stores/player'
 import { useQueueStore } from '@/stores/queue'
@@ -129,7 +128,7 @@ export default {
   },
   methods: {
     stopAll() {
-      player.stop()
+      this.playerStore.stopPlayback()
     }
   }
 }

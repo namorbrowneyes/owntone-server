@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import player from '@/api/player'
 import { usePlayerStore } from '@/stores/player'
 
 export default {
@@ -71,7 +70,7 @@ export default {
   },
   methods: {
     play() {
-      player.play({ item_id: this.item.id })
+      this.playerStore.playTrack(this.item.id)
     }
   }
 }

@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import player from '@/api/player'
 import { usePlayerStore } from '@/stores/player'
 
 export default {
@@ -22,7 +21,7 @@ export default {
   },
   methods: {
     toggle() {
-      player.consume(!this.playerStore.consume)
+      this.playerStore.toggleConsume()
     }
   }
 }

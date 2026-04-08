@@ -1,4 +1,5 @@
 import './styles.scss'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import App from './App.vue'
 import VueClickAway from 'vue3-click-away'
 import VueLazyLoad from 'vue3-lazyload'

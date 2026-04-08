@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import player from '@/api/player'
 import { usePlayerStore } from '@/stores/player'
 
 export default {
@@ -28,7 +27,7 @@ export default {
   },
   methods: {
     toggle() {
-      player.shuffle(!this.playerStore.shuffle)
+      this.playerStore.toggleShuffle()
     }
   }
 }

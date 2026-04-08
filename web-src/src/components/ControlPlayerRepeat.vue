@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import player from '@/api/player'
 import { usePlayerStore } from '@/stores/player'
 
 export default {
@@ -30,13 +29,7 @@ export default {
   },
   methods: {
     toggle() {
-      if (this.playerStore.isRepeatAll) {
-        player.repeat('single')
-      } else if (this.playerStore.isRepeatSingle) {
-        player.repeat('off')
-      } else {
-        player.repeat('all')
-      }
+      this.playerStore.cycleRepeat()
     }
   }
 }

@@ -55,6 +55,52 @@ export const usePlayerStore = defineStore('PlayerStore', {
         const data = await library.track(trackId)
         this.lyricsContent = data.lyrics || ''
       }
+    },
+    playPause() {
+      if (this.state === 'play') {
+        this.state = 'pause'
+        player.pause()
+      } else {
+        this.state = 'play'
+        player.play()
+      }
+    },
+    playTrack(itemId) {
+      this.state = 'play'
+      this.item_id = itemId
+      player.play({ item_id: itemId })
+    },
+    stopPlayback() {
+      this.state = 'stop'
+      player.stop()
+    },
+    skipNext() {
+      player.next()
+    },
+    skipPrevious() {
+      player.previous()
+    },
+    toggleShuffle() {
+      this.shuffle = !this.shuffle
+      player.shuffle(this.shuffle)
+    },
+    cycleRepeat() {
+      if (this.repeat === 'all') {
+        this.repeat = 'single'
+      } else if (this.repeat === 'single') {
+        this.repeat = 'off'
+      } else {
+        this.repeat = 'all'
+      }
+      player.repeat(this.repeat)
+    },
+    toggleConsume() {
+      this.consume = !this.consume
+      player.consume(this.consume)
+    },
+    changeVolume(volume, outputId) {
+      this.volume = volume
+      player.setVolume(volume, outputId)
     }
   },
   getters: {

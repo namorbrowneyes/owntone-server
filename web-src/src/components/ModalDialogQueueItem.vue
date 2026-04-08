@@ -14,9 +14,9 @@
 <script>
 import ListProperties from '@/components/ListProperties.vue'
 import ModalDialog from '@/components/ModalDialog.vue'
-import player from '@/api/player'
 import queue from '@/api/queue'
 import services from '@/api/services'
+import { usePlayerStore } from '@/stores/player'
 import { useServicesStore } from '@/stores/services'
 
 export default {
@@ -25,7 +25,10 @@ export default {
   props: { item: { required: true, type: Object }, show: Boolean },
   emits: ['close'],
   setup() {
-    return { servicesStore: useServicesStore() }
+    return {
+      playerStore: usePlayerStore(),
+      servicesStore: useServicesStore()
+    }
   },
   data() {
     return { spotifyTrack: {} }
@@ -154,7 +157,7 @@ export default {
     },
     play() {
       this.$emit('close')
-      player.play({ item_id: this.item.id })
+      this.playerStore.playTrack(this.item.id)
     },
     remove() {
       this.$emit('close')
