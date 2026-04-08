@@ -12,6 +12,11 @@
         </control-link>
       </div>
       <a class="navbar-item ml-auto" @click="uiStore.toggleBurgerMenu">
+        <span
+          class="connection-dot"
+          :class="uiStore.websocketConnected ? 'is-connected' : 'is-disconnected'"
+          :title="uiStore.websocketConnected ? $t('server.connected') : $t('server.disconnected')"
+        />
         <mdicon
           class="icon"
           :name="uiStore.showBurgerMenu ? 'close' : 'menu'"
@@ -148,5 +153,33 @@ export default {
 <style scoped>
 .is-fullwidth {
   width: 100%;
+}
+
+.connection-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: absolute;
+  top: 12px;
+  right: 8px;
+}
+
+.connection-dot.is-connected {
+  background-color: hsl(141, 71%, 48%);
+}
+
+.connection-dot.is-disconnected {
+  background-color: hsl(348, 100%, 61%);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 </style>

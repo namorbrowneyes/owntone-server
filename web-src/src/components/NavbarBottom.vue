@@ -1,5 +1,10 @@
 <template>
   <nav class="navbar is-fixed-bottom" :class="{ 'is-bottom': !isPlayerPage }">
+    <div
+      v-if="playerStore.isPlaying && progressPercent > 0"
+      class="progress-bar"
+      :style="{ width: progressPercent + '%' }"
+    />
     <div class="navbar-brand is-flex-grow-1">
       <control-link class="navbar-item" :to="{ name: 'queue' }">
         <mdicon class="icon" name="playlist-play" />
@@ -17,6 +22,11 @@
           exact
           class="navbar-item is-justify-content-flex-start is-expanded is-clipped is-size-7"
         >
+          <img
+            v-if="queueStore.current.artwork_url"
+            class="track-artwork"
+            :src="queueStore.current.artwork_url"
+          />
           <div class="is-text-clipped">
             <strong v-text="queueStore.current.title" />
             <br />
@@ -124,6 +134,15 @@ export default {
     metadata() {
       const { current } = this.queueStore
       return [current.artist, current.album].filter(Boolean).join(' - ')
+    },
+    progressPercent() {
+      if (this.playerStore.item_length_ms > 0) {
+        return (
+          (this.playerStore.item_progress_ms / this.playerStore.item_length_ms) *
+          100
+        )
+      }
+      return 0
     }
   },
   methods: {
@@ -139,5 +158,24 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background-color: hsl(204, 86%, 53%);
+  transition: width 1s linear;
+  z-index: 1;
+}
+
+.track-artwork {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  object-fit: cover;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
 }
 </style>

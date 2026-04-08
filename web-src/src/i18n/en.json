@@ -331,7 +331,9 @@
   },
   "server": {
     "appended-tracks": "{count} track appended to the queue|{count} tracks appended to the queue",
+    "connected": "Connected",
     "connection-failed": "Failed to connect to OwnTone server",
+    "disconnected": "Disconnected",
     "queue-saved": "Queue saved to playlist {name}",
     "request-failed": "Request failed (status: {status} {cause} {url})"
   },

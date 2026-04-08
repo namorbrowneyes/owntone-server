@@ -14,6 +14,7 @@ api.interceptors.response.use(
           status: error.request.status,
           url: error.request.responseURL
         }),
+        timeout: 5000,
         type: 'danger'
       })
     }
