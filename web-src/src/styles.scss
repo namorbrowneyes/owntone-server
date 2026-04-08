@@ -124,22 +124,91 @@ button.navbar-item:hover {
 
 // ─── Content & Layout ─────────────────────────────────────────────
 .media:first-of-type {
-  padding-top: 1rem;
+  padding-top: 0.75rem;
 }
 
-// Bottom padding for player bar
 body.has-navbar-fixed-bottom {
   padding-bottom: var(--owntone-player-height) !important;
 }
 
+// Content sections — tighter spacing
+.section {
+  padding: 1.5rem;
+}
+
+// ─── Tab Navigation ───────────────────────────────────────────────
+.tabs {
+  a {
+    border-bottom-width: 2px;
+    padding: 0.75em 1em;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
+    transition: all 0.15s ease;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+      border-bottom-color: var(--owntone-text-muted) !important;
+    }
+  }
+
+  li.is-active a {
+    font-weight: 600;
+    opacity: 1;
+    border-bottom-color: var(--owntone-accent) !important;
+    color: var(--owntone-accent) !important;
+  }
+}
+
+// ─── Page Headings ────────────────────────────────────────────────
+.title.is-4,
+.title.is-5 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.7rem !important;
+  opacity: 0.5;
+}
+
 // ─── List Items ───────────────────────────────────────────────────
+.media {
+  border: none !important;
+  padding: 0.5rem 0.75rem;
+}
+
 .media.is-clickable {
-  padding: 0.6rem 0.75rem;
   border-radius: 6px;
   transition: background-color 0.15s ease;
 
   &:hover {
     background-color: var(--owntone-bg-tertiary);
+  }
+}
+
+// Index headers (A, B, C, ...)
+.tag.is-small {
+  background: var(--owntone-bg-tertiary);
+  color: var(--owntone-text-muted);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+// ─── Form Elements ────────────────────────────────────────────────
+.select select,
+.input,
+.textarea {
+  border-radius: 6px;
+  border-color: var(--owntone-border);
+  transition: border-color 0.15s ease;
+
+  &:focus {
+    border-color: var(--owntone-accent);
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.15);
   }
 }
 
@@ -194,6 +263,14 @@ body.has-navbar-fixed-bottom {
 // ─── Notifications ────────────────────────────────────────────────
 .notification {
   border-radius: 8px;
+  border: 1px solid var(--owntone-border);
+}
+
+// ─── Modal Dialogs ────────────────────────────────────────────────
+.modal-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--owntone-border);
 }
 
 // ─── Overlays ─────────────────────────────────────────────────────
@@ -202,12 +279,27 @@ body.has-navbar-fixed-bottom {
   position: fixed;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 
 // ─── Headings ─────────────────────────────────────────────────────
 .title {
   letter-spacing: -0.01em;
+}
+
+// ─── Hero / Content Headers ───────────────────────────────────────
+.content-with-heading {
+  padding: 0 1rem;
+}
+
+// ─── Images ───────────────────────────────────────────────────────
+.figure {
+  border-radius: 8px;
+  overflow: hidden;
+
+  img {
+    border-radius: 8px;
+  }
 }
 
 // ─── Scrollbar ────────────────────────────────────────────────────
