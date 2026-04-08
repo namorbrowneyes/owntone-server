@@ -55,6 +55,17 @@
                 <control-player-lyrics class="button" />
               </div>
             </div>
+            <hr class="dropdown-divider" />
+            <div class="dropdown-item is-flex is-justify-content-center">
+              <button
+                class="button is-danger is-small"
+                :disabled="playerStore.isStopped"
+                @click="stopAll"
+              >
+                <mdicon class="icon" name="stop" size="18" />
+                <span>{{ $t('player.button.stop') }}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -76,7 +87,9 @@ import ControlPlayerPrevious from '@/components/ControlPlayerPrevious.vue'
 import ControlPlayerRepeat from '@/components/ControlPlayerRepeat.vue'
 import ControlPlayerShuffle from '@/components/ControlPlayerShuffle.vue'
 import ControlStreamVolume from '@/components/ControlStreamVolume.vue'
+import player from '@/api/player'
 import { useOutputsStore } from '@/stores/outputs'
+import { usePlayerStore } from '@/stores/player'
 import { useQueueStore } from '@/stores/queue'
 import { useUIStore } from '@/stores/ui'
 
@@ -100,6 +113,7 @@ export default {
   setup() {
     return {
       outputsStore: useOutputsStore(),
+      playerStore: usePlayerStore(),
       queueStore: useQueueStore(),
       uiStore: useUIStore()
     }
@@ -111,6 +125,11 @@ export default {
     metadata() {
       const { current } = this.queueStore
       return [current.artist, current.album].filter(Boolean).join(' - ')
+    }
+  },
+  methods: {
+    stopAll() {
+      player.stop()
     }
   }
 }

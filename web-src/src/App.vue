@@ -135,6 +135,10 @@ export default {
       })
     },
     openWebsocket() {
+      // Eager fetch critical state immediately — don't wait for WebSocket
+      this.playerStore.initialise()
+      this.queueStore.initialise()
+      this.outputsStore.initialise()
       const socket = this.createWebsocket()
       const events = [
         'database',
@@ -149,8 +153,12 @@ export default {
         'volume'
       ]
       socket.onopen = () => {
+        this.uiStore.websocketConnected = true
         socket.send(JSON.stringify({ notify: events }))
         this.handleEvents(events)
+      }
+      socket.onclose = () => {
+        this.uiStore.websocketConnected = false
       }
       window.addEventListener('focus', () => {
         this.handleEvents(events)

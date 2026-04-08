@@ -30,6 +30,7 @@ export const useUIStore = defineStore('UIStore', {
     hideSpotify: false,
     showBurgerMenu: false,
     showPlayerMenu: false,
-    showUpdateDialog: false
+    showUpdateDialog: false,
+    websocketConnected: false
   })
 })
