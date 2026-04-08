@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "serve": "vite --port 3000 --host",
-    "build": "vite build --base='./'",
+    "build": "vite build",
     "lint": "eslint",
     "dev": "vite",
     "format": "prettier . --write",
