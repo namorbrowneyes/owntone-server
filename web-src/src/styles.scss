@@ -3,6 +3,66 @@
 @use 'bulma/bulma';
 @use 'bulma/sass/utilities/mixins';
 
+// ─── Modern Dark Theme Overrides ──────────────────────────────────
+:root {
+  --owntone-bg: #0d1117;
+  --owntone-bg-secondary: #161b22;
+  --owntone-bg-tertiary: #1c2128;
+  --owntone-border: #30363d;
+  --owntone-text: #e6edf3;
+  --owntone-text-muted: #8b949e;
+  --owntone-accent: #58a6ff;
+  --owntone-accent-hover: #79c0ff;
+  --owntone-success: #3fb950;
+  --owntone-danger: #f85149;
+  --owntone-player-height: 72px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bulma-scheme-h: 215;
+    --bulma-scheme-s: 21%;
+    --bulma-scheme-main-l: 5%;
+    --bulma-scheme-main-bis-l: 8%;
+    --bulma-scheme-main-ter-l: 11%;
+    --bulma-background-l: 11%;
+    --bulma-border-l: 20%;
+    --bulma-border-weak-l: 16%;
+    --bulma-text-l: 90%;
+    --bulma-text-weak-l: 56%;
+    --bulma-text-strong-l: 96%;
+    --bulma-link-h: 211;
+    --bulma-link-s: 100%;
+    --bulma-link-l: 67%;
+    --bulma-primary-l: 55%;
+  }
+}
+
+[data-theme='dark'] {
+  --bulma-scheme-h: 215;
+  --bulma-scheme-s: 21%;
+  --bulma-scheme-main-l: 5%;
+  --bulma-scheme-main-bis-l: 8%;
+  --bulma-scheme-main-ter-l: 11%;
+  --bulma-background-l: 11%;
+  --bulma-border-l: 20%;
+  --bulma-border-weak-l: 16%;
+  --bulma-text-l: 90%;
+  --bulma-text-weak-l: 56%;
+  --bulma-text-strong-l: 96%;
+  --bulma-link-h: 211;
+  --bulma-link-s: 100%;
+  --bulma-link-l: 67%;
+  --bulma-primary-l: 55%;
+}
+
+// ─── Typography ───────────────────────────────────────────────────
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ─── Navbar Theming ───────────────────────────────────────────────
 @mixin navbar($theme) {
   $bg: '--bulma-#{$theme}';
   $bg-l: '--bulma-#{$theme}-l';
@@ -15,6 +75,8 @@
 .is-top {
   @media (prefers-color-scheme: dark) {
     @include navbar(dark);
+    background: var(--owntone-bg-secondary) !important;
+    border-bottom: 1px solid var(--owntone-border);
   }
 
   @media (prefers-color-scheme: light) {
@@ -23,6 +85,8 @@
 
   [data-theme='dark'] & {
     @include navbar(dark);
+    background: var(--owntone-bg-secondary) !important;
+    border-bottom: 1px solid var(--owntone-border);
   }
 
   [data-theme='light'] & {
@@ -32,6 +96,8 @@
 
 .is-bottom {
   @include navbar(dark);
+  background: var(--owntone-bg-secondary) !important;
+  border-top: 1px solid var(--owntone-border);
 }
 
 button.navbar-item:hover {
@@ -53,17 +119,66 @@ button.navbar-item:hover {
 .navbar-item {
   width: var(--bulma-navbar-height);
   justify-content: center;
+  transition: background-color 0.15s ease;
 }
 
+// ─── Content & Layout ─────────────────────────────────────────────
 .media:first-of-type {
   padding-top: 1rem;
 }
 
-.overlay-fullscreen {
-  @extend .is-overlay;
-  position: fixed;
-  z-index: 1;
-  background-color: rgba(10, 10, 10, 0.5);
+// Bottom padding for player bar
+body.has-navbar-fixed-bottom {
+  padding-bottom: var(--owntone-player-height) !important;
+}
+
+// ─── List Items ───────────────────────────────────────────────────
+.media.is-clickable {
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--owntone-bg-tertiary);
+  }
+}
+
+// ─── Tags & Badges ────────────────────────────────────────────────
+.tag {
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+// ─── Buttons ──────────────────────────────────────────────────────
+.button {
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  font-weight: 500;
+}
+
+.buttons.has-addons .button {
+  border-radius: 6px;
+
+  &:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &:not(:first-child):not(:last-child) {
+    border-radius: 0;
+  }
+}
+
+// ─── Dropdowns ────────────────────────────────────────────────────
+.dropdown-content {
+  border-radius: 8px;
+  border: 1px solid var(--owntone-border);
 }
 
 .dropdown-menu.is-mobile {
@@ -74,4 +189,36 @@ button.navbar-item:hover {
     max-height: calc(100vh - calc(2 * var(--bulma-navbar-height)));
     overflow: auto;
   }
+}
+
+// ─── Notifications ────────────────────────────────────────────────
+.notification {
+  border-radius: 8px;
+}
+
+// ─── Overlays ─────────────────────────────────────────────────────
+.overlay-fullscreen {
+  @extend .is-overlay;
+  position: fixed;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+// ─── Headings ─────────────────────────────────────────────────────
+.title {
+  letter-spacing: -0.01em;
+}
+
+// ─── Scrollbar ────────────────────────────────────────────────────
+@media (prefers-color-scheme: dark) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--owntone-border) transparent;
+  }
+}
+
+[data-theme='dark'] * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--owntone-border) transparent;
 }

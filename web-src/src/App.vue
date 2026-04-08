@@ -1,5 +1,6 @@
 <template>
   <navbar-top />
+  <banner-scan-progress />
   <router-view v-slot="{ Component }">
     <component :is="Component" />
   </router-view>
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import BannerScanProgress from '@/components/BannerScanProgress.vue'
 import ListNotifications from '@/components/ListNotifications.vue'
 import ModalDialogRemotePairing from '@/components/ModalDialogRemotePairing.vue'
 import ModalDialogUpdate from '@/components/ModalDialogUpdate.vue'
@@ -41,6 +43,7 @@ import { useUIStore } from './stores/ui'
 export default {
   name: 'App',
   components: {
+    BannerScanProgress,
     ListNotifications,
     ModalDialogRemotePairing,
     ModalDialogUpdate,
