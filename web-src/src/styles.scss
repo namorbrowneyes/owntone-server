@@ -179,23 +179,65 @@ body.has-navbar-fixed-bottom {
 .media {
   border: none !important;
   padding: 0.5rem 0.75rem;
+  margin-top: 0 !important;
 }
 
 .media.is-clickable {
-  border-radius: 6px;
+  border-radius: 8px;
   transition: background-color 0.15s ease;
+  margin: 1px 0;
 
   &:hover {
     background-color: var(--owntone-bg-tertiary);
+  }
+
+  &:active {
+    background-color: var(--owntone-border);
+  }
+
+  // Track title
+  .is-size-6 {
+    font-size: 0.9rem !important;
+    line-height: 1.4;
+  }
+
+  // Artist / album lines
+  .is-size-7 {
+    font-size: 0.78rem !important;
+    line-height: 1.3;
+  }
+
+  // Three-dot menu
+  .media-right a {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  &:hover .media-right a {
+    opacity: 1;
   }
 }
 
 // Index headers (A, B, C, ...)
 .tag.is-small {
-  background: var(--owntone-bg-tertiary);
-  color: var(--owntone-text-muted);
-  font-size: 0.65rem;
+  background: transparent;
+  color: var(--owntone-accent);
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0;
+}
+
+// ─── Level (heading bar) ──────────────────────────────────────────
+.level {
+  margin-bottom: 0.75rem !important;
+}
+
+// Action buttons in heading
+.level-right .buttons .button {
+  font-size: 0.8rem;
+  padding: 0.4em 0.8em;
 }
 
 // ─── Form Elements ────────────────────────────────────────────────
