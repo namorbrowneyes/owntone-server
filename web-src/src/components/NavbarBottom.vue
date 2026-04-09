@@ -217,6 +217,7 @@ export default {
     },
     transferToOwnTone() {
       if (this.spotifyStore.trackUri) {
+        fetch('http://localhost:3001/api/pause', { method: 'PUT' })
         import('@/api/queue').then((mod) => {
           mod.default.playUri(this.spotifyStore.trackUri, false)
         })
