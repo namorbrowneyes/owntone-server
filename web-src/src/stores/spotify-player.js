@@ -1,9 +1,7 @@
-import api from '@/api'
 import { defineStore } from 'pinia'
 
 const POLL_INTERVAL = 3000
-const SPOTIFY_API = 'https://api.spotify.com/v1/me/player/currently-playing'
-const TOKEN_REFRESH_BUFFER = 30000
+const LYRICS_API = 'http://localhost:3001/api/now-playing'
 
 const getArtistNames = (item) =>
   (item?.artists || []).map((a) => a.name).join(', ')
@@ -32,7 +30,6 @@ export const useSpotifyPlayerStore = defineStore('SpotifyPlayerStore', {
       if (this.pollId) {
         return
       }
-      this.fetchToken()
       this.pollId = setInterval(() => {
         this.poll()
       }, POLL_INTERVAL)
@@ -44,48 +41,21 @@ export const useSpotifyPlayerStore = defineStore('SpotifyPlayerStore', {
         this.pollId = null
       }
     },
-    async fetchToken() {
-      try {
-        const data = await api.get('./api/spotify')
-        if (data.webapi_token_valid && data.webapi_token) {
-          this.token = data.webapi_token
-          this.tokenExpiresAt = Date.now() + (data.webapi_token_expires_in * 1000)
-        }
-      } catch {
-        // Token fetch failed
-      }
-    },
-    async ensureToken() {
-      if (!this.token || Date.now() > this.tokenExpiresAt - TOKEN_REFRESH_BUFFER) {
-        await this.fetchToken()
-      }
-      return Boolean(this.token)
-    },
     async poll() {
-      if (!await this.ensureToken()) {
-        return
-      }
       try {
-        const response = await fetch(SPOTIFY_API, {
-          headers: { Authorization: `Bearer ${this.token}` }
-        })
-        this.handleResponse(response)
-      } catch {
-        // Network error, will retry
-      }
-    },
-    async handleResponse(response) {
-      if (response.status === 204 || response.status === 202) {
-        this.isActive = false
-        return
-      }
-      if (response.status === 401 || response.status === 403) {
-        await this.fetchToken()
-        return
-      }
-      if (response.ok) {
+        const response = await fetch(LYRICS_API)
+        if (!response.ok) {
+          this.isActive = false
+          return
+        }
         const data = await response.json()
+        if (!data.is_playing) {
+          this.isActive = false
+          return
+        }
         this.$patch(parseTrackData(data))
+      } catch {
+        // Lyrics server unreachable, will retry
       }
     }
   },
@@ -95,8 +65,6 @@ export const useSpotifyPlayerStore = defineStore('SpotifyPlayerStore', {
     pollId: null,
     repeatState: 'off',
     shuffleState: false,
-    token: '',
-    tokenExpiresAt: 0,
     trackAlbum: '',
     trackArtist: '',
     trackArtwork: '',
