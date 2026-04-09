@@ -1,19 +1,6 @@
-const CACHE_NAME = 'owntone-v1'
-const ASSETS = [
-  './',
-  './index.html',
-  './assets/index.js',
-  './assets/index.css',
-  './favicon.ico',
-  './android-chrome-192x192.png',
-  './android-chrome-512x512.png',
-  './apple-touch-icon.png'
-]
+const CACHE_NAME = 'owntone-v2'
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  )
+self.addEventListener('install', () => {
   self.skipWaiting()
 })
 
@@ -28,20 +15,17 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url)
-  // Only cache same-origin static assets, not API calls
   if (url.origin !== location.origin || url.pathname.startsWith('/api/')) {
     return
   }
+  // Network-first: always try fresh, fall back to cache if offline
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      const fetchPromise = fetch(event.request).then((response) => {
-        if (response.ok) {
-          const clone = response.clone()
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone))
-        }
-        return response
-      }).catch(() => cached)
-      return cached || fetchPromise
-    })
+    fetch(event.request).then((response) => {
+      if (response.ok) {
+        const clone = response.clone()
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone))
+      }
+      return response
+    }).catch(() => caches.match(event.request))
   )
 })
