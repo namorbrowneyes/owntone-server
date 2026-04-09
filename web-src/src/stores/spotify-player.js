@@ -20,7 +20,8 @@ const parseTrackData = (data) => {
     trackArtwork: images.length > 0 && images[0].url || '',
     trackDurationMs: item.duration_ms || 0,
     trackProgressMs: data.progress_ms || 0,
-    trackTitle: item.name || ''
+    trackTitle: item.name || '',
+    trackUri: item.uri || ''
   }
 }
 
@@ -70,6 +71,7 @@ export const useSpotifyPlayerStore = defineStore('SpotifyPlayerStore', {
     trackArtwork: '',
     trackDurationMs: 0,
     trackProgressMs: 0,
-    trackTitle: ''
+    trackTitle: '',
+    trackUri: ''
   })
 })

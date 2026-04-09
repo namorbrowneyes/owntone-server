@@ -77,6 +77,18 @@
             />
             <control-stream-volume />
           </div>
+          <template v-if="showSpotify">
+            <hr class="dropdown-divider" />
+            <div class="dropdown-item is-flex is-justify-content-center">
+              <button
+                class="button is-success is-small"
+                @click="transferToOwnTone"
+              >
+                <mdicon class="icon" name="speaker" size="18" />
+                <span>Play on speakers</span>
+              </button>
+            </div>
+          </template>
           <hr class="dropdown-divider" />
           <div class="dropdown-item is-flex is-justify-content-center">
             <button
@@ -202,6 +214,14 @@ export default {
     },
     stopAll() {
       this.playerStore.stopPlayback()
+    },
+    transferToOwnTone() {
+      if (this.spotifyStore.trackUri) {
+        import('@/api/queue').then((mod) => {
+          mod.default.playUri(this.spotifyStore.trackUri, false)
+        })
+        this.uiStore.hideMenus()
+      }
     },
     toggleMute() {
       if (this.playerStore.volume > 0) {
