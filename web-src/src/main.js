@@ -21,3 +21,7 @@ const app = createApp(App)
 
 app.config.globalProperties.$formatters = formatters
 app.mount('#app')
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js')
+}
