@@ -16,15 +16,18 @@
       <div class="player-left">
         <control-link :to="{ name: 'player' }" class="player-track-link">
           <img
-            v-if="queueStore.current.artwork_url"
+            v-if="trackArtwork"
             class="player-artwork"
-            :src="queueStore.current.artwork_url"
+            :src="trackArtwork"
           />
           <div v-else class="player-artwork-placeholder">
             <mdicon name="music" size="20" />
           </div>
           <div class="player-track-info">
-            <div class="player-track-title" v-text="queueStore.current.title || $t('page.player.title')" />
+            <div class="player-track-title">
+              <mdicon v-if="showSpotify" name="spotify" size="14" class="spotify-badge" />
+              {{ trackTitle }}
+            </div>
             <div class="player-track-meta" v-text="metadata" />
           </div>
         </control-link>
@@ -109,6 +112,7 @@ import ControlStreamVolume from '@/components/ControlStreamVolume.vue'
 import { useOutputsStore } from '@/stores/outputs'
 import { usePlayerStore } from '@/stores/player'
 import { useQueueStore } from '@/stores/queue'
+import { useSpotifyPlayerStore } from '@/stores/spotify-player'
 import { useUIStore } from '@/stores/ui'
 
 export default {
@@ -129,6 +133,7 @@ export default {
       outputsStore: useOutputsStore(),
       playerStore: usePlayerStore(),
       queueStore: useQueueStore(),
+      spotifyStore: useSpotifyPlayerStore(),
       uiStore: useUIStore()
     }
   },
@@ -136,11 +141,33 @@ export default {
     return { savedVolume: 50 }
   },
   computed: {
+    showSpotify() {
+      return this.spotifyStore.isActive && this.playerStore.isStopped
+    },
+    trackTitle() {
+      if (this.showSpotify) {
+        return this.spotifyStore.trackTitle
+      }
+      return this.queueStore.current.title || this.$t('page.player.title')
+    },
+    trackArtwork() {
+      if (this.showSpotify) {
+        return this.spotifyStore.trackArtwork
+      }
+      return this.queueStore.current.artwork_url
+    },
     metadata() {
+      if (this.showSpotify) {
+        const parts = [this.spotifyStore.trackArtist, this.spotifyStore.trackAlbum]
+        return parts.filter(Boolean).join(' \u2014 ')
+      }
       const { current } = this.queueStore
       return [current.artist, current.album].filter(Boolean).join(' \u2014 ')
     },
     progressPercent() {
+      if (this.showSpotify && this.spotifyStore.trackDurationMs > 0) {
+        return (this.spotifyStore.trackProgressMs / this.spotifyStore.trackDurationMs) * 100
+      }
       if (this.playerStore.item_length_ms > 0) {
         return (
           (this.playerStore.item_progress_ms / this.playerStore.item_length_ms) *

@@ -38,6 +38,7 @@ import { useQueueStore } from '@/stores/queue'
 import { useRemotesStore } from './stores/remotes'
 import { useServicesStore } from '@/stores/services'
 import { useSettingsStore } from '@/stores/settings'
+import { useSpotifyPlayerStore } from '@/stores/spotify-player'
 import { useUIStore } from './stores/ui'
 
 export default {
@@ -61,6 +62,7 @@ export default {
       remotesStore: useRemotesStore(),
       servicesStore: useServicesStore(),
       settingsStore: useSettingsStore(),
+      spotifyPlayerStore: useSpotifyPlayerStore(),
       uiStore: useUIStore()
     }
   },
@@ -101,6 +103,7 @@ export default {
         this.uiStore.hideSingles = this.configurationStore.hide_singles
         document.title = this.configurationStore.library_name
         this.openWebsocket()
+        this.spotifyPlayerStore.startPolling()
       } catch {
         this.notificationsStore.add({
           text: this.$t('server.connection-failed'),
