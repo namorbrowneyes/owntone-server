@@ -22,6 +22,9 @@ const app = createApp(App)
 app.config.globalProperties.$formatters = formatters
 app.mount('#app')
 
+// Unregister any existing service worker to prevent stale cache issues
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js')
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((reg) => reg.unregister())
+  })
 }
